@@ -1,0 +1,8 @@
+# Non-secret defaults. Override per environment via env vars / .env.
+prediction_cadence_seconds: 20
+prediction:
+  model_version: baseline-v0
+  driver_pairs: []
+temporal:
+  task_queue: f1-session
+  namespace: default

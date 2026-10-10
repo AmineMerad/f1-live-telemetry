@@ -1,0 +1,29 @@
+[project]
+name = "f1-api"
+version = "0.1.0"
+description = "FastAPI service: predictions, evidence, freshness"
+requires-python = ">=3.12"
+dependencies = [
+    "f1-common",
+    "f1-features",
+    "f1-ingestion",
+    "f1-intelligence",
+    "f1-replay",
+    "fastapi>=0.115",
+    "temporalio>=1.34.0",
+    "uvicorn>=0.30",
+]
+
+[tool.uv.sources]
+f1-common = { workspace = true }
+f1-features = { workspace = true }
+f1-ingestion = { workspace = true }
+f1-intelligence = { workspace = true }
+f1-replay = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["f1_api"]

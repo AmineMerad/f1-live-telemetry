@@ -1,0 +1,97 @@
+# Local self-hosted Temporal + app services. Single-node portfolio setup —
+# not HA, not production-grade. Stop with `make compose-down`.
+name: f1-live-intelligence
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-temporal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-temporal}
+      POSTGRES_DB: ${POSTGRES_DB:-temporal}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-temporal}"]
+      interval: 5s
+      retries: 10
+
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  temporal:
+    image: temporalio/auto-setup:1.22.4
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-temporal}
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-temporal}
+      - POSTGRES_SEEDS=postgres
+      - ENABLE_ES=true
+      - ES_SEEDS=elasticsearch
+      - ES_VERSION=v7
+    ports:
+      - "7233:7233"
+
+  temporal-ui:
+    image: temporalio/ui:2.21.0
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    ports:
+      - "8080:8080"
+
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    depends_on:
+      - temporal
+    env_file:
+      - .env
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+    volumes:
+      - f1data:/app/data
+    ports:
+      - "${API_PORT:-8000}:8000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    depends_on:
+      temporal:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: services/ingestion/Dockerfile
+    depends_on:
+      - temporal
+    env_file:
+      - .env
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+
+volumes:
+  pgdata:
+  esdata:
+  f1data:

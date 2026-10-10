@@ -1,0 +1,18 @@
+[project]
+name = "f1-ingestion-service"
+version = "0.1.0"
+description = "Ingestion runtime: owns stream connection and checkpoints (outside Temporal)"
+requires-python = ">=3.12"
+dependencies = ["f1-common", "f1-ingestion", "f1-replay"]
+
+[tool.uv.sources]
+f1-common = { workspace = true }
+f1-ingestion = { workspace = true }
+f1-replay = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["f1_ingestion_service"]

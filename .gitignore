@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# uv
+.uv/
+
+# Env / secrets — never commit credentials or provider tokens
+.env
+.env.*
+!.env.example
+
+# Data (raw events, protected datasets stay local)
+data/
+*.parquet
+*.csv
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Docker / Temporal local state
+volumes/
+temporal-data/

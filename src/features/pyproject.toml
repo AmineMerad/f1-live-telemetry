@@ -1,0 +1,16 @@
+[project]
+name = "f1-features"
+version = "0.1.0"
+description = "Versioned feature snapshots for prediction cycles"
+requires-python = ">=3.12"
+dependencies = ["f1-common", "pydantic>=2"]
+
+[tool.uv.sources]
+f1-common = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["f1_features"]
