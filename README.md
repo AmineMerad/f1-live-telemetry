@@ -7,8 +7,7 @@
 
 Near-real-time system that detects driver pace changes, compares telemetry
 patterns, and estimates head-to-head finish probabilities, orchestrated with
-Temporal. See the spec for scope, interpretation boundaries, and the 8-week
-roadmap.
+Temporal. See the spec for scope, interpretation boundaries, and roadmap.
 
 ## Layout (uv workspace mono-repo)
 
@@ -68,11 +67,11 @@ Local API: http://localhost:8000/health — `make dev` creates `.env` from
 
 ## Docs
 
-- `f1-live-intelligence.md` — full project spec (planning status, scope, roadmap)
-- `docs/architecture.md` — why Temporal, what it does not do
-- `docs/temporal-visibility.md` — Elasticsearch role, measured resources, drilled failure behavior
-- `docs/data-rights.md` — provider terms checklist (recheck before publishing)
-- `docs/runbook.md` — local run/stop procedures
+- `f1-live-intelligence.md`  full project spec (planning status, scope, roadmap)
+- `docs/architecture.md`  why Temporal, what it does not do
+- `docs/temporal-visibility.md`  Elasticsearch role, measured resources, drilled failure behavior
+- `docs/data-rights.md`  provider terms checklist (recheck before publishing)
+- `docs/runbook.md`  local run/stop procedures
 
 ## Budget / data warnings
 
